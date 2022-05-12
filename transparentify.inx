@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+  <name>Transparentify</name>
+  <id>org.inkscape.color.transparentify_extension</id>
+
+  <param name="tab" type="notebook">
+    <page name="Transparency" gui-text="Transparency">
+      <param name="opacity" type="float" min="1" max="99" appearance="full" gui-text="opacity in %:" gui-description="amount of desired transparency">80</param>
+      <param name="force_transparency" type="boolean" gui-text="force transparency" gui-description="if transparency cannot be reached, force value and adopt color. By default, the max possible transparency is set">false</param>
+    </page>
+    <page name="Background Color" gui-text="Background Color">
+      <param name="background_color" gui-text="Background Color" type="color" gui-description="the resulting transparent color will match the original color when over this background">0xffffffff</param>
+    </page>
+    <page name="Help" gui-text="Help">
+      <label xml:space="preserve">
+Adds transparency to selected elements while keeping the original color value.
+
+By default, the new transparent color is matched against white (it will show the original color when overlaying a white background).
+The background color can be changed on the Background tab.
+
+If transparency cannot be reached, it will be set to the max possible value.
+Setting "force transparency" will instead deliver the best matching color to ensure the transparency value.
+      </label>
+    </page>
+  </param>
+  <effect>
+    <!--object-type>path</object-type-->
+    <effects-menu>
+      <submenu name="Color"/>
+    </effects-menu>
+  </effect>
+  <script>
+    <command location="inx" interpreter="python">transparentify_extension.py</command>
+  </script>
+</inkscape-extension>
