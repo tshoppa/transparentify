@@ -47,19 +47,22 @@ class Transparentify(inkex.ColorExtension):
         # calculate color with desired transparency. If a channel drops below zero (transparency not reachable) set flag
         alpha = self.options.opacity/100
         inv = 1.0 - alpha
-        below_zero = False
+        out_of_bounds = False
         def simple_transparentify (val):
             v = (c[val] - getattr(back, val) * inv) / alpha
+            nonlocal out_of_bounds
             if v < 0:
-                v = 0
-                nonlocal below_zero
-                below_zero = True
-            return v if v < 255 else 255
+                out_of_bounds = True
+                return 0
+            if v > 255:
+                out_of_bounds = True
+                return 255
+            return v
         c['red'] = simple_transparentify('red')
         c['green'] = simple_transparentify('green')
         c['blue'] = simple_transparentify('blue')
         # check if all values could be set properly or if best fit should be calculated
-        if below_zero and not self.options.force_transparency:
+        if out_of_bounds and not self.options.force_transparency:
             #c = self.best_fit_transparent(color)
             # iterate to the best possible transparency
             r, g, b, alpha = -1.0, -1.0, -1.0, 0.0
